@@ -20,7 +20,7 @@ class GoVM:
   #     ...
 
   govm_repo_url = 'https://github.com/MakeNowJust/govm.git'
-  version_str  = '%prog 0.1.1'
+  version_str  = '%prog 0.1.2-dev'
 
   # entry point
 
