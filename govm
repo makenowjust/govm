@@ -160,9 +160,28 @@ class GoVM:
         '',
         'export GOVM_ROOT=%s' % root,
         'export GOROOT=$GOVM_ROOT/versions/current',
-        'export PATH=$GOROOT/bin:$PATH',
+        'export PATH=$GOVM_ROOT:$GOROOT/bin:$PATH',
       )))
     )
+
+  def cmd_self_update(self, args):
+    '''Update GoVM itself.'''
+    root = self.cfg.root
+    return (
+      (has('git') or die('Git is required'))
+      and (
+        isdir(root)
+        or die('GoVM is not installed. Please set up at the first.')
+      )
+      and (
+        sh('cd %s && git pull' % root)
+      )
+      and echo ('\n'.join((
+        '',
+        'GoVM is successfully updated.',
+      )))
+    )
+
 
   # utilities
 
