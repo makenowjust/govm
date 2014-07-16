@@ -1,0 +1,278 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2014 TSUYUSATO Kitsune
+# This software is released under the MIT License.
+# http://opensource.org/licenses/mit-license.php
+
+import optparse
+import os
+import os.path
+import shutil
+import sys
+
+class GoVM:
+  # Directory structure:
+  # $GOVM_ROOT
+  #   govm        This script.
+  #   repo        Place to store repository of Go.
+  #   versions    Place to store binary and source Go.    
+  #     current   Symbolic link for an install directory.
+  #     ...
+
+  govm_repo_url = 'https://github.com/MakeNowJust/govm.git'
+  version_str  = '%prog 0.1.0'
+
+  # entry point
+
+  def main(self, args, cfg):
+    self.cfg = cfg
+    p = GoVMOptionParser(version = self.version_str)
+    (options, left_args) = p.parse_args(args[1:])
+    if len(left_args) == 0:
+      left_args = ['help']
+    subcmd_name = left_args[0]
+    try:
+      subcmd_func = getattr(self, 'cmd_%s' % subcmd_name)
+    except AttributeError:
+      die('Subcommand %s is not available.' % subcmd_name)
+    subcmd_func(left_args)
+    return
+
+  # subcommands
+
+  def cmd_help(self, args):
+    '''Show help message to use GoVM.'''
+    subcmd_names = [n for n in dir(self) if n.startswith('cmd_')]
+    subcmd_names.sort()
+    longest_name_len = max(len(n) for n in subcmd_names)
+    print 'Available commands:'
+    for n in subcmd_names:
+      print '  %s%s%s' % (
+        n[len('cmd_'):],
+        ' ' * (longest_name_len - len(n) + 2),
+        getattr(self, n).__doc__.split('\n')[0]
+      )
+    return True
+
+  def cmd_install(self, args):
+    '''Install a specific version of Go.'''
+    p = GoVMOptionParser(usage = '%prog install $version')
+    (options, left_args) = p.parse_args(args[1:])
+    if len(left_args) < 1:
+      die('Please specify a version of Go to install.')
+    version = left_args[0]
+    return (
+      self.fetch(version)
+      and self.checkout(version)
+      and self.build_all(version)
+    )
+
+  def cmd_build(self, args):
+    '''Build a specific version of installed Go for cross compile.'''
+    p = GoVMOptionParser(usage = '%prog crossbuild $version $os $arch')
+    (options, left_args) = p.parse_args(args[1:])
+    if len(left_args) < 3:
+      die('Please specify a version and a os name and a arch name of Go to build.')
+    version = left_args[0]
+    os = left_args[1]
+    arch = left_args[2]
+    if not isdir(self.cfg.go_dir(version)):
+      die('Version %s of Go is not installed.' % version)
+    return self.build_make(version, os, arch)
+
+  def cmd_list(self, args):
+    '''List currently installed versions of Go.'''
+    current_version = self.cfg.current_version()
+    for version in listdir(self.cfg.gos_dir()):
+      if isdir(self.cfg.go_dir(version)) and version != 'current':
+        mark = '*' if version == current_version else ' '
+        print mark, version
+    return True
+
+  def cmd_list_remote(self, args):
+    '''List remote versions of Go.'''
+    repo_dir = self.cfg.repo_dir()
+    tags = os.popen('cd %s && hg tags' % repo_dir).read().split('\n')
+    tags = [t for t in tags if t.startswith('go')]
+    for t in tags:
+      print t.split(' ')[0]
+    return True
+
+
+  def cmd_uninstall(self, args):
+    '''Uninstall a specific version of Go.'''
+    p = GoVMOptionParser(usage = '%prog uninstall $version')
+    (options, left_args) = p.parse_args(args[1:])
+    if len(left_args) < 1:
+      die('Please specify a version of Go to uninstall.')
+    version = left_args[0]
+    current_dir = self.cfg.go_dir('current')
+    go_dir = self.cfg.go_dir(version)
+    if isdir(current_dir):
+      dst_dir = readlink(current_dir)
+      if normalize_path(dst_dir) == normalize_path(go_dir):
+        die('%s can not be uninstalled. it is currently used.' % version)
+    if isdir(go_dir):
+      rm_r(go_dir)
+    else:
+      warn('%s is not found.' % version)
+    return True
+
+  def cmd_use(self, args):
+    '''Use a specific version of Go as the default one.'''
+    p = GoVMOptionParser(usage = '%prog use $version')
+    (option, left_args) = p.parse_args(args[1:])
+    if len(left_args) < 1:
+      die('Please specify a version of Go to use.')
+    version = left_args[0]
+    if version == 'system':
+      current_dir = self.cfg.go_dir('current')
+      if is_dir(current_dir):
+        rm(current_dir)
+    else:
+      go_dir = self.cfg.go_dir(version)
+      if not isdir(go_dir):
+        die('%s is not installed.' % version)
+      current_dir = self.cfg.go_dir('current')
+      if isdir(current_dir):
+        rm(current_dir)
+      ln_s(go_dir, current_dir)
+    return True
+
+  # utilities
+
+  def fetch(self, version):
+    repo_url = self.cfg.repo_url()
+    repo_dir = self.cfg.repo_dir()
+    return (
+      (has('hg') or die('Mercurial is required.'))
+      and (
+        isdir(repo_dir)
+        or sh('hg clone -u release %s %s' % (repo_url, repo_dir))
+        or die()
+      )
+      and (sh('cd %s && hg pull' % repo_dir) or die())
+    )
+
+  def checkout(self, version):
+    repo_dir = self.cfg.repo_dir()
+    gos_dir = self.cfg.gos_dir()
+    go_dir = self.cfg.go_dir(version)
+    return (
+      (has('hg') or die('Mercurial is required.'))
+      and (isdir(gos_dir) or mkdir(gos_dir))
+      and (
+        isdir(go_dir)
+        or sh('cd %s && hg archive -t tar -r %s -p %s - | (cd %s && tar xf -)'
+          % (repo_dir, version, version, gos_dir))
+        or die()
+      )
+    )
+
+  def build_all(self, version):
+    go_dir = self.cfg.go_dir(version)
+    self.cfg.env['GOROOT'] = ''
+    return (
+      isdir(go_dir)
+      and sh('cd %s/src && ./make.bash' % go_dir)
+    )
+
+  def build_make(self, version, os, arch):
+    go_dir = self.cfg.go_dir(version)
+    self.cfg.env['GOROOT'] = ''
+    return (
+      isdir(go_dir)
+      and sh('cd %s/src && GOOS=%s GOARCH=%s ./make.bash' %
+        (go_dir, os, arch))
+    )
+
+class GoVMOptionParser(optparse.OptionParser):
+  def __init__(self, *args, **kw):
+    optparse.OptionParser.__init__(self, *args, **kw)
+    self.disable_interspersed_args()
+    return
+
+  def parse_args(self, args):
+    return optparse.OptionParser.parse_args(self, list(args))
+
+class GoVMConfig:
+  root_var_name = 'GOVM_ROOT'
+  repo_var_name = 'GOVM_REPO_URL'
+
+  def __init__(self, env):
+    self.env = env
+    self.root = env.get(self.root_var_name, '~/.govm')
+    self.repo = env.get(self.repo_var_name, 'https://code.google.com/p/go')
+
+  def gos_dir(self):
+    return '%s/versions' % self.root
+
+  def go_dir(self, version):
+    return '%s/%s' % (self.gos_dir(), version)
+
+  def repo_dir(self):
+    return '%s/repo' % self.root
+
+  def current_version(self):
+    try:
+      version = os.path.basename(readlink(self.go_dir('current')))
+      return version
+    except:
+      return None
+
+  def repo_url(self):
+    return self.repo
+
+
+# shell like functions
+
+def die(msg = ''):
+  return exit(msg)
+
+def warn(msg):
+  sys.stderr.write("%s\n" % msg)
+  return True
+
+def sh(cmd):
+  print 'govm> %s' % cmd
+  return os.system(cmd) == 0
+
+def has(prog):
+  return os.system('which %s >/dev/null 2>/dev/null' % prog) == 0
+
+def expand(path):
+  return os.path.expanduser(path)
+
+def isdir(path):
+  return os.path.isdir(expand(path))
+
+def listdir(path):
+  return os.listdir(expand(path))
+
+def ln_s(src, dst):
+  os.symlink(expand(src), expand(dst))
+  return True
+
+def mkdir(path):
+  os.makedirs(expand(path), 0755)
+  return True
+
+def normalize_path(path):
+  return os.readlink(expand(path))
+
+def readlink(path):
+  return os.readlink(expand(path))
+
+def rm(path):
+  os.remove(expand(path))
+  return True
+
+def rm_r(path):
+  shutil.rmtree(expand(path))
+  return True
+
+
+# main
+
+if __name__ == '__main__':
+  GoVM().main(sys.argv, GoVMConfig(os.environ))
