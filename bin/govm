@@ -317,7 +317,7 @@ def mkdir(path):
   return True
 
 def normalize_path(path):
-  return os.readlink(expand(path))
+  return os.path.abspath(expand(path))
 
 def readlink(path):
   return os.readlink(expand(path))
