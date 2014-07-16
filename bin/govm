@@ -162,7 +162,7 @@ class GoVM:
       and echo('\n'.join((
         '',
         'GoVM is successfully installed. For daily use,',
-        'please add the following line into your ~/.bash_login etc:',
+        'please add the following line into your ~/.bashrc etc:',
         '',
         'export GOVM_ROOT=%s' % root,
         'export GOROOT=$GOVM_ROOT/versions/current',

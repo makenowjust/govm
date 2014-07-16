@@ -11,7 +11,7 @@ Using curl one liner.
 $ curl -L git.io/govm | python - setup
 ```
 
-Add `$PATH` setting your shell config file (`.bash_login` or `.zlogin`).
+Add `$PATH` setting your shell config file (`.bashrc` or `.zshrc`).
 
 ```sh
 export GOVM_ROOT=$HOME/.govm
