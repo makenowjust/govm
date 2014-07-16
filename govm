@@ -61,10 +61,13 @@ class GoVM:
     if len(left_args) < 1:
       die('Please specify a version of Go to install.')
     version = left_args[0]
+    go_dir = self.cfg.go_dir(version)
+    root = self.cfg.root
     return (
       self.fetch(version)
       and self.checkout(version)
       and self.build_all(version)
+      and ln_s('%s/govm' % root, '%s/bin/govm' % go_dir)
     )
 
   def cmd_build(self, args):
