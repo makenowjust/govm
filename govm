@@ -139,6 +139,31 @@ class GoVM:
       ln_s(go_dir, current_dir)
     return True
 
+  def cmd_setup(self, args):
+    '''Set up files and directories for GoVM'''
+    root = self.cfg.root
+    return (
+      (has('git') or die('Git is required'))
+      and (
+        not isdir(root)
+        or die('Files and directories for GoVM are already set up.')
+      )
+      and (
+        sh('git clone %s %s' %
+          (self.govm_repo_url, root))
+        or die()
+      )
+      and echo('\n'.join((
+        '',
+        'GoVM is successfully installed. For daily use,',
+        'please add the following line into your ~/.bash_login etc:',
+        '',
+        'export GOVM_ROOT=%s' % root,
+        'export GOROOT=$GOVM_ROOT/versions/current',
+        'export PATH=$GOROOT/bin:$PATH',
+      )))
+    )
+
   # utilities
 
   def fetch(self, version):
@@ -225,6 +250,10 @@ class GoVMConfig:
 
 
 # shell like functions
+
+def echo(msg):
+  print msg
+  return True
 
 def die(msg = ''):
   return exit(msg)
