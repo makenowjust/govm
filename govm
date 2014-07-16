@@ -19,7 +19,6 @@ class GoVM:
   #     current   Symbolic link for an install directory.
   #     ...
 
-  govm_repo_url = 'https://github.com/MakeNowJust/govm.git'
   version_str  = '%prog 0.1.2-dev'
 
   # entry point
@@ -153,7 +152,7 @@ class GoVM:
       )
       and (
         sh('git clone %s %s' %
-          (self.govm_repo_url, root))
+          (self.cfg.govm_repo_url(), root))
         or die()
       )
       and echo('\n'.join((
@@ -245,11 +244,13 @@ class GoVMOptionParser(optparse.OptionParser):
 class GoVMConfig:
   root_var_name = 'GOVM_ROOT'
   repo_var_name = 'GOVM_REPO_URL'
+  govm_repo_var_name = 'GOVM_SELF_REPO_URL'
 
   def __init__(self, env):
     self.env = env
     self.root = env.get(self.root_var_name, '~/.govm')
     self.repo = env.get(self.repo_var_name, 'https://code.google.com/p/go')
+    self.govm_repo = env.get(self.govm_repo_var_name, 'https://github.com/MakeNowJust/govm.git')
 
   def gos_dir(self):
     return '%s/versions' % self.root
@@ -269,6 +270,9 @@ class GoVMConfig:
 
   def repo_url(self):
     return self.repo
+
+  def govm_repo_url(self):
+    return self.govm_repo
 
 
 # shell like functions
