@@ -163,7 +163,7 @@ class GoVM:
         '',
         'export GOVM_ROOT=%s' % root,
         'export GOROOT=$GOVM_ROOT/versions/current',
-        'export PATH=$GOVM_ROOT:$GOROOT/bin:$PATH',
+        'export PATH=$GOROOT/bin:$PATH',
       )))
     )
 
