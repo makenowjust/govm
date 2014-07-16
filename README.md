@@ -1,6 +1,7 @@
 #govm
 
 GoVM is the Version Manager of Go.
+Inspired [nodebrew](https://github.com/hokaccha/nodebrew) and [vvm](https://github.com/kana/vim-version-manager).
 
 ##Install
 
@@ -65,6 +66,13 @@ Swintch use version.
 $ govm use go1.3
 $ go version
 go version go1.3 ...
+```
+
+Build for cross compiling.
+
+```
+$ govm build go1.3 windows amd64
+govm> ...
 ```
 
 View all installed version list.
