@@ -19,7 +19,7 @@ class GoVM:
   #     current   Symbolic link for an install directory.
   #     ...
 
-  version_str  = '%prog 0.2.0'
+  version_str  = '%prog 0.2.1-dev'
 
   # entry point
 
