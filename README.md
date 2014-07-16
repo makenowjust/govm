@@ -5,6 +5,18 @@ Inspired [nodebrew](https://github.com/hokaccha/nodebrew) and [vvm](https://gith
 
 ##Install
 
+Prequirees:
+
+  - Git
+  - Mercurial
+  - GCC
+
+If you use ubuntu or debian, 
+
+```
+$ sudo apt-get install git mercurial build-essential
+```
+
 Using curl one liner.
 
 ```
