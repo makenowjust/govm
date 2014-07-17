@@ -54,7 +54,7 @@ class GoVM:
         getattr(self, n).__doc__.split('\n')[0]
       )
     print
-    print 'Usage:'
+    print 'Example:'
     print '  govm install go1.3             # install go1.3'
     print '  govm use go1.3                 # using go1.3 as default'
     print '  govm build go1.3 windows amd64 # build runtime for windows/amd64 cross compiling'
