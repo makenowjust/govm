@@ -275,7 +275,7 @@ class GoVM:
         cp('%s/%s' % (bin_root, b), go_bin_dir)
     else:
       root = self.cfg.root
-      ln_s('%s/bin/govm' % root, '%s/govm' % go_dir_bin)
+      ln_s('%s/bin/govm' % root, '%s/govm' % go_bin_dir)
     return True
 
   def link_current(self, version = None):
