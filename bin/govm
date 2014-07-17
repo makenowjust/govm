@@ -19,7 +19,7 @@ class GoVM:
   #     current   Symbolic link for an install directory.
   #     ...
 
-  version_str  = '%prog 0.2.2-dev'
+  version_str  = '0.2.2-dev'
 
   # entry point
 
@@ -41,6 +41,8 @@ class GoVM:
 
   def cmd_help(self, args):
     '''Show help message to use GoVM.'''
+    print 'Version: %s' % self.version_str
+    print
     subcmd_names = [n for n in dir(self) if n.startswith('cmd_')]
     subcmd_names.sort()
     longest_name_len = max(len(n) for n in subcmd_names)
@@ -51,6 +53,12 @@ class GoVM:
         ' ' * (longest_name_len - len(n) + 2),
         getattr(self, n).__doc__.split('\n')[0]
       )
+    print
+    print 'Usage:'
+    print '  govm install go1.3             # install go1.3'
+    print '  govm use go1.3                 # using go1.3 as default'
+    print '  govm build go1.3 windows amd64 # build runtime for windows/amd64 cross compiling'
+    print '  govm uninstall go1.3           # uninstall go1.3'
     return True
 
   def cmd_install(self, args):
@@ -70,7 +78,7 @@ class GoVM:
     )
 
   def cmd_build(self, args):
-    '''Build a specific version of installed Go for cross compile.'''
+    '''Build a specific version of Go runtime for cross compiling.'''
     p = GoVMOptionParser(usage = '%prog crossbuild $version $os $arch')
     (options, left_args) = p.parse_args(args[1:])
     if len(left_args) < 3:
