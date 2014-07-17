@@ -301,6 +301,9 @@ class GoVM:
               '%s\\%s %%*' % (go_bin_dir, b),
             )))
       self.link_govm('current')
+      if version:
+        with open('%s/version.txt' % current_dir, 'w') as f:
+          f.write(version)
     else:
       ln_s(go_dir, self.cfg.go_dir('current'))
     return True
@@ -346,11 +349,20 @@ class GoVMConfig:
     return '%s/repo' % self.root
 
   def current_version(self):
-    try:
-      version = os.path.basename(readlink(self.go_dir('current')))
-      return version
-    except:
-      return None
+    if is_windows:
+      try:
+        f = open('%s/version.txt' % self.go_dir('current'), 'r')
+        version = f.read()
+        f.open
+        return version
+      except:
+        return None
+    else:
+      try:
+        version = os.path.basename(readlink(self.go_dir('current')))
+        return version
+      except:
+        return None
 
   def repo_url(self):
     return self.repo
