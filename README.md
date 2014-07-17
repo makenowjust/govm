@@ -27,7 +27,7 @@ $ curl -L git.io/govm | python - setup
 Or, python only one liner.
 
 ```
-$ python -c 'import urllib2; print urllib2.urlopen("http://git.io/govm")' | python - setup
+$ python -c 'import urllib2; print urllib2.urlopen("http://git.io/govm").read()' | python - setup
 ```
 
 Add `$PATH` setting your shell config file (`.bashrc` or `.zshrc`).
