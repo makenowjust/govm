@@ -125,8 +125,10 @@ View help.
 
 ```
 $ govm help
+Version: 0.2.2
+
 Available commands:
-  build        Build a specific version of installed Go for cross compile.
+  build        Build a specific version of Go runtime for cross compiling.
   help         Show help message to use GoVM.
   install      Install a specific version of Go.
   list         List currently installed versions of Go.
@@ -135,6 +137,12 @@ Available commands:
   setup        Set up files and directories for GoVM
   uninstall    Uninstall a specific version of Go.
   use          Use a specific version of Go as the default one.
+
+Usage:
+  govm install go1.3             # install go1.3
+  govm use go1.3                 # using go1.3 as default
+  govm build go1.3 windows amd64 # build runtime for windows/amd64 cross compiling
+  govm uninstall go1.3           # uninstall go1.3
 ```
 
 ##Contributing
