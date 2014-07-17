@@ -7,6 +7,7 @@ Inspired [nodebrew](https://github.com/hokaccha/nodebrew) and [vvm](https://gith
 
 Prequirees:
 
+  - Python (version 2 only)
   - Git
   - Mercurial
   - GCC
@@ -21,6 +22,12 @@ Using curl one liner.
 
 ```
 $ curl -L git.io/govm | python - setup
+```
+
+Or, python only one liner.
+
+```
+$ python -c 'import urllib2; print urllib2.urlopen("http://git.io/govm")' | python - setup
 ```
 
 Add `$PATH` setting your shell config file (`.bashrc` or `.zshrc`).
