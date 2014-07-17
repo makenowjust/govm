@@ -182,7 +182,7 @@ class GoVM:
         or die()
       )
       and (isdir(gos_dir) or mkdir(gos_dir))
-      and (isdir(current_dir) or self.link_govm('current'))
+      and (isdir(current_dir) or self.link_current())
       and echo('\n'.join((
         '',
         'GoVM is successfully installed. For daily use,',
