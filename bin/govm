@@ -146,21 +146,20 @@ class GoVM:
   def cmd_setup(self, args):
     '''Set up files and directories for GoVM'''
     root = self.cfg.root
+    gos_dir = self.cfg.gos_dir()
+    current_dir = self.cfg.go_dir('current')
+    if isdir(root) and isdir(gos_dir) and isdir(current_dir):
+      die('Files and directories for GoVM are already set up.')
     return (
       (has('git') or die('Git is required'))
       and (
-        not isdir(root)
-        or die('Files and directories for GoVM are already set up.')
-      )
-      and (
-        sh('git clone %s %s' %
+        isdir(root)
+        or sh('git clone %s %s' %
           (self.cfg.govm_repo_url(), root))
         or die()
       )
-      and (
-        mkdir(self.cfg.gos_dir())
-        and ln_s(root, self.cfg.go_dir('current'))
-      )
+      and (isdir(gos_dir) or mkdir(gos_dir))
+      and (isdir(current_dir) or ln_s(root, current_dir))
       and echo('\n'.join((
         '',
         'GoVM is successfully installed. For daily use,',
