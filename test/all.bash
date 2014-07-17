@@ -11,6 +11,7 @@ export PATH=$GOROOT/bin:$PATH
 echo "setup govm"
 rm -rf $GOVM_ROOT
 $GOVM_SELF_REPO_URL/bin/govm setup >/dev/null
+test "`which govm`" == "$GOROOT/bin/govm"
 
 # setup hg repository
 echo "setup hg repository"
@@ -24,3 +25,5 @@ for test in ${tests[@]}; do
   eval "./test/test-${test}.bash"
   echo "test $test ok"
 done
+
+echo "complete"
