@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 mkdir -p $GOVM_REPO_URL
 cd $GOVM_REPO_URL
 hg init
