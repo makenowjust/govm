@@ -145,6 +145,14 @@ Examples:
   govm uninstall go1.3           # uninstall go1.3
 ```
 
+##Developing
+
+Run test.
+
+```
+$ ./test/all.bash
+```
+
 ##Contributing
 
   1. Fork it. ( <https://github.com/MakeNowJust/govm/fork> )
