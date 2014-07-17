@@ -7,6 +7,8 @@ export GOVM_SELF_REPO_URL=$PWD
 export GOVM_ROOT=$PWD/.test
 export GOROOT=$GOVM_ROOT/versions/current
 export PATH=$GOROOT/bin:$PATH
+export GOOS=
+export GOARCH=
 
 echo "setup govm"
 rm -rf $GOVM_ROOT
