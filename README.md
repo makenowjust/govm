@@ -1,4 +1,4 @@
-#govm [![Build Status](https://drone.io/github.com/MakeNowJust/govm/status.png)](https://drone.io/github.com/MakeNowJust/govm/latest)
+#govm [![Build Status](https://drone.io/github.com/MakeNowJust/govm/status.png)](https://drone.io/github.com/MakeNowJust/govm/latest) [![GitHub version](https://badge.fury.io/gh/MakeNowJust%2Fgovm.svg)](http://badge.fury.io/gh/MakeNowJust%2Fgovm)
 
 GoVM is the Version Manager of Go.
 Inspired [nodebrew](https://github.com/hokaccha/nodebrew) and [vvm](https://github.com/kana/vim-version-manager).
