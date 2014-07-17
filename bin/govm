@@ -135,6 +135,7 @@ class GoVM:
     current_version = self.cfg.current_version()
     if version == current_version:
       die('%s can not be uninstalled. it is currently used.' % version)
+    go_dir = self.cfg.go_dir(version)
     if isdir(go_dir):
       rm_r(go_dir)
     else:
