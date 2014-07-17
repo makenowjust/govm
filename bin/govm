@@ -132,12 +132,9 @@ class GoVM:
     if len(left_args) < 1:
       die('Please specify a version of Go to uninstall.')
     version = left_args[0]
-    current_dir = self.cfg.go_dir('current')
-    go_dir = self.cfg.go_dir(version)
-    if isdir(current_dir):
-      dst_dir = readlink(current_dir)
-      if normalize_path(dst_dir) == normalize_path(go_dir):
-        die('%s can not be uninstalled. it is currently used.' % version)
+    current_version = self.cfg.current_version()
+    if version == current_version:
+      die('%s can not be uninstalled. it is currently used.' % version)
     if isdir(go_dir):
       rm_r(go_dir)
     else:
