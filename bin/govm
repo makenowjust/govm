@@ -19,7 +19,7 @@ if os.name == 'nt':
   is_windows = True
   which = 'where'
   devnull = 'nul'
-  makesh = 'make.bat'
+  makesh = 'cmd //C make.bat'
 
 class GoVM:
   # Directory structure:

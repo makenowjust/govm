@@ -2,5 +2,5 @@
 
 set -e
 
-ok=$(govm install gotest | grep -P '^(?!govm>)' | tail -1)
+ok=$(govm install gotest | grep -vE '^govm>' | tail -1)
 test "$ok" = "OK  "
