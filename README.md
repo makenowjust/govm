@@ -138,7 +138,7 @@ Available commands:
   uninstall    Uninstall a specific version of Go.
   use          Use a specific version of Go as the default one.
 
-Usage:
+Examples:
   govm install go1.3             # install go1.3
   govm use go1.3                 # using go1.3 as default
   govm build go1.3 windows amd64 # build runtime for windows/amd64 cross compiling
