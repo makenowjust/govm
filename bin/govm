@@ -10,6 +10,17 @@ import os.path
 import shutil
 import sys
 
+# for windows
+is_windows = False
+which = 'which'
+devnull = '/dev/null'
+makesh = './make.bash'
+if os.name == 'nt':
+  is_windows = True
+  which = 'where'
+  devnull = 'nul'
+  makesh = 'make.bat'
+
 class GoVM:
   # Directory structure:
   # $GOVM_ROOT
@@ -74,7 +85,7 @@ class GoVM:
       self.fetch()
       and self.checkout(version)
       and self.build_all(version)
-      and ln_s('%s/bin/govm' % root, '%s/bin/govm' % go_dir)
+      and self.link_govm(version)
     )
 
   def cmd_build(self, args):
@@ -143,15 +154,18 @@ class GoVM:
     if version == 'system':
       current_dir = self.cfg.go_dir('current')
       if is_dir(current_dir):
-        rm(current_dir)
+        if is_windows:
+          rm_r('%s\\bin' % current_dir)
+        else:
+          rm(current_dir)
     else:
       go_dir = self.cfg.go_dir(version)
       if not isdir(go_dir):
         die('%s is not installed.' % version)
       current_dir = self.cfg.go_dir('current')
-      if isdir(current_dir):
+      if not is_windows and isdir(current_dir):
         rm(current_dir)
-      ln_s(go_dir, current_dir)
+      self.link_current(version)
     return True
 
   def cmd_setup(self, args):
@@ -170,7 +184,7 @@ class GoVM:
         or die()
       )
       and (isdir(gos_dir) or mkdir(gos_dir))
-      and (isdir(current_dir) or ln_s(root, current_dir))
+      and (isdir(current_dir) or self.link_govm('current'))
       and echo('\n'.join((
         '',
         'GoVM is successfully installed. For daily use,',
@@ -193,6 +207,9 @@ class GoVM:
       )
       and (
         sh('cd %s && git pull' % root)
+      )
+      and (
+        is_windows and self.update_govm()
       )
       and echo ('\n'.join((
         '',
@@ -236,7 +253,7 @@ class GoVM:
     self.cfg.env['GOROOT'] = ''
     return (
       isdir(go_dir)
-      and sh('cd %s/src && ./make.bash' % go_dir)
+      and sh('cd %s/src && %s' % (go_dir, makesh))
     )
 
   def build_make(self, version, os, arch):
@@ -244,9 +261,60 @@ class GoVM:
     self.cfg.env['GOROOT'] = ''
     return (
       isdir(go_dir)
-      and sh('cd %s/src && GOOS=%s GOARCH=%s ./make.bash' %
-        (go_dir, os, arch))
+      and sh('cd %s/src && GOOS=%s GOARCH=%s %s' %
+        (go_dir, os, arch, makesh))
     )
+
+  def link_govm(self, version):
+    go_bin_dir = '%s/bin' % self.cfg.go_dir(version)
+    if not isdir(go_bin_dir):
+      mkdir(go_bin_dir)
+    if is_windows:
+      bin_root = '%s\\bin' % self.cfg.root
+      for b in listdir(bin_root):
+        cp('%s/%s' % (bin_root, b), go_bin_dir)
+    else:
+      root = self.cfg.root
+      ln_s('%s/bin/govm' % root, '%s/govm' % go_dir_bin)
+    return True
+
+  def link_current(self, version = None):
+    if version:
+      go_dir = self.cfg.go_dir(version)
+    else:
+      go_dir = self.cfg.root
+    if is_windows:
+      current_dir = self.cfg.go_dir('current')
+      if not isdir(current_dir):
+        mkdir(current_dir)
+      current_bin_dir = '%s\\bin' % current_dir
+      if isdir(current_bin_dir):
+        rm_r(current_bin_dir) or die()
+      mkdir(current_bin_dir)
+      go_bin_dir = '%s\\bin' % go_dir
+      for b in listdir(go_bin_dir):
+        if not isdir(b) and b != 'govm' and b != 'govm.bat':
+          with open('%s/%s.bat' % (current_bin_dir, '.'.join(b.split('.')[0:-1])), 'w') as f:
+            f.write('\n'.join((
+              '@echo off',
+              'set GOROOT=%s' % go_dir,
+              '%s\\%s %%*' % (go_bin_dir, b),
+            )))
+      self.link_govm('current')
+    else:
+      ln_s(go_dir, self.cfg.go_dir('current'))
+    return True
+
+  def update_govm(self):
+    bin_root = '%s\\bin' % self.cfg.root
+    gos_dir = self.cfg.gos_dir()
+    for d in listdir(gos_dir):
+      if isdir('%s\\%s\\bin' % (gos_dir, d)):
+        for b in listdir(bin_root):
+          if not isdir('%s\\%s' % (bin_root, b)):
+            cp('%s\\%s' % (bin_root, b),
+              '%s\\%s\\bin' % (gos_dir, d))
+    return True
 
 class GoVMOptionParser(optparse.OptionParser):
   def __init__(self, *args, **kw):
@@ -309,7 +377,7 @@ def sh(cmd):
   return os.system(cmd) == 0
 
 def has(prog):
-  return os.system('which %s >/dev/null 2>/dev/null' % prog) == 0
+  return os.system('%s %s >%s 2>%s' % (which, prog, devnull, devnull)) == 0
 
 def expand(path):
   return os.path.expanduser(path)
@@ -340,6 +408,10 @@ def rm(path):
 
 def rm_r(path):
   shutil.rmtree(expand(path))
+  return True
+
+def cp(src, dst):
+  shutil.copy(expand(src), expand(dst))
   return True
 
 
