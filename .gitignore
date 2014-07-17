@@ -1,3 +1,6 @@
 # for GoVM
 repo
 versions
+
+# for testing
+.test
