@@ -63,7 +63,7 @@ class GoVM:
     go_dir = self.cfg.go_dir(version)
     root = self.cfg.root
     return (
-      self.fetch(version)
+      self.fetch()
       and self.checkout(version)
       and self.build_all(version)
       and ln_s('%s/bin/govm' % root, '%s/bin/govm' % go_dir)
@@ -94,6 +94,8 @@ class GoVM:
   def cmd_list_remote(self, args):
     '''List remote versions of Go.'''
     repo_dir = self.cfg.repo_dir()
+    if not isdir(repo_dir):
+      self.fetch()
     tags = os.popen('cd %s && hg tags' % repo_dir).read().split('\n')
     tags = [t for t in tags if t.startswith('go')]
     for t in tags:
@@ -191,14 +193,14 @@ class GoVM:
 
   # utilities
 
-  def fetch(self, version):
+  def fetch(self):
     repo_url = self.cfg.repo_url()
     repo_dir = self.cfg.repo_dir()
     return (
       (has('hg') or die('Mercurial is required.'))
       and (
         isdir(repo_dir)
-        or sh('hg clone -u release %s %s' % (repo_url, repo_dir))
+        or sh('hg clone %s %s' % (repo_url, repo_dir))
         or die()
       )
       and (sh('cd %s && hg pull' % repo_dir) or die())
