@@ -84,8 +84,11 @@ class GoVM:
 
   def cmd_list(self, args):
     '''List currently installed versions of Go.'''
+    gos_dir = self.cfg.gos_dir()
+    if not isdir(gos_dir):
+      die('Please setup directories for GoVM')
     current_version = self.cfg.current_version()
-    for version in listdir(self.cfg.gos_dir()):
+    for version in listdir(gos_dir):
       if isdir(self.cfg.go_dir(version)) and version != 'current':
         mark = '*' if version == current_version else ' '
         print mark, version
