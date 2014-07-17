@@ -259,10 +259,12 @@ class GoVM:
   def build_make(self, version, os, arch):
     go_dir = self.cfg.go_dir(version)
     self.cfg.env['GOROOT'] = ''
+    self.cfg.env['GOOS'] = os
+    self.cfg.env['GOARCH'] = arch
     return (
       isdir(go_dir)
-      and sh('cd %s/src && GOOS=%s GOARCH=%s %s' %
-        (go_dir, os, arch, makesh))
+      and sh('cd %s/src && %s' %
+        (go_dir, makesh))
     )
 
   def link_govm(self, version):
