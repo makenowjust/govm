@@ -131,7 +131,7 @@ View help.
 
 ```
 $ govm help
-Version: 0.4.1
+Version: 0.4.2
 
 Available commands:
   build        Build a specific version of Go runtime for cross compiling.
