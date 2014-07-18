@@ -41,8 +41,7 @@ Add `$PATH` setting your shell config file (`.bashrc` or `.zshrc`).
 
 ```sh
 export GOVM_ROOT=$HOME/.govm
-export GOROOT=$GOVM_ROOT/versions/current
-export PATH=$GOROOT/bin:$PATH
+export PATH=$GOROOT/versions/current/bin:$PATH
 ```
 
 Reload config.
