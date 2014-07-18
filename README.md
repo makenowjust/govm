@@ -3,6 +3,13 @@
 GoVM is the Version Manager of Go.
 Inspired [nodebrew](https://github.com/hokaccha/nodebrew) and [vvm](https://github.com/kana/vim-version-manager).
 
+##Feature
+
+  - Main program is python script of one file.
+  - One liner install
+  - Cross compile support
+  - __Windows support__
+
 ##Install
 
 Prequirees:
@@ -10,7 +17,7 @@ Prequirees:
   - Python (version 2 only)
   - Git
   - Mercurial
-  - GCC
+  - And [Go requires](http://golang.org/doc/install).
 
 If you use ubuntu or debian, 
 
@@ -125,7 +132,7 @@ View help.
 
 ```
 $ govm help
-Version: 0.2.2
+Version: 0.4.1
 
 Available commands:
   build        Build a specific version of Go runtime for cross compiling.
@@ -144,6 +151,21 @@ Examples:
   govm build go1.3 windows amd64 # build runtime for windows/amd64 cross compiling
   govm uninstall go1.3           # uninstall go1.3
 ```
+
+##Directory structure
+
+```
+$GOVM_ROOT
+  govm        This script.
+  repo        Place to store repository of Go.
+  versions    Place to store binary and source Go.    
+    current   Symbolic link for an install directory.
+    ...       And other versions of Go
+```
+
+##More help
+
+  - If you want to change version of Go by directories, you should use [direnv](https://github.com/zimbatm/direnv).
 
 ##Developing
 
