@@ -30,7 +30,7 @@ class GoVM:
   #     current   Symbolic link for an install directory.
   #     ...
 
-  version_str  = '0.4.1'
+  version_str  = '0.4.2-dev'
 
   # entry point
 
