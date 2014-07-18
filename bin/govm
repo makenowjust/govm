@@ -297,7 +297,6 @@ class GoVM:
           with open('%s/%s.bat' % (current_bin_dir, '.'.join(b.split('.')[0:-1])), 'w') as f:
             f.write('\n'.join((
               '@echo off',
-              'set GOROOT=%s' % go_dir,
               '%s\\%s %%*' % (go_bin_dir, b),
             )))
       self.link_govm('current')
