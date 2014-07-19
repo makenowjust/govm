@@ -4,7 +4,69 @@
   <head>
     <meta charset="utf-8">
     <title>GoVM - the Go Version Manager</title>
+    <!-- css -->
+    <link rel="stylesheet" href="./css/page.css">
   </head>
   <body>
+    <header>
+      <h1>
+        <a href=".">
+          GoVM - the Go Version Manager
+        </a>
+      </h1>
+      <div class="header-info">
+        <div id="twitter-button" class="item">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-via="MakeNowJust">Tweet</a>
+        </div>
+        <div id="github-button">
+          <iframe src="http://ghbtns.com/github-btn.html?user=MakeNowJust&repo=govm&type=fork&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="62" height="20"></iframe>
+        </div>
+      </div>
+    </header>
+
+    <div class="body">
+
+      <nav>
+        <ul class="navlist">
+          <li><a href="#install">Install</a></li>
+          <li><a href="#usage">Usage</a></li>
+          <li class="sublist"><a href="#govm-install">govm install</a></li>
+          <li class="sublist"><a href="#govm-use">govm use</a></li>
+          <li class="sublist"><a href="#govm-list-remote">govm list-remote</a></li>
+          <li class="sublist"><a href="#govm-list">govm list</a></li>
+          <li class="sublist"><a href="#govm-build">govm build</a></li>
+          <li class="sublist"><a href="#govm-uninstall">govm uninstall</a></li>
+          <li class="sublist"><a href="#govm-update">govm update</a></li>
+          <li class="sublist"><a href="#govm-help">govm help</a></li>
+          <li><a href="#license">License</a></li>
+        </ul>
+      </nav>
+
+      <div class="content">
+        <div id="data">
+          <h2>Welcome</h2>
+          <p>
+            <img src="./img/govm-logo.png" alt="govm logo">
+          </p>
+        </div>
+        <footer>
+          <small>
+            (C) 2014 TSUYUSATO Kitsune (
+            <a href="https://github.com/MakeNowJust">
+              @MakeNowJust
+            </a>
+            )
+          </small>
+        </footer>
+      </div>
+
+    </div> <!-- .body -->
+
+    <!-- js -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+    <script src="//platform.twitter.com/widgets.js" id="twitter-wjs"></script>
+    <script src="./js/page.js"></script>
   </body>
 </html>
