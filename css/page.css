@@ -1,0 +1,134 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  font-size: 16px;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.4em;
+}
+
+h1 > a {
+  color: #000;
+  text-decoration: none;
+}
+
+h1 > a:hover {
+  text-decoration: underline;
+}
+
+header {
+  display: block;
+  position: relative;
+  margin-top: 0.3em;
+  min-height: 10%;
+  padding: 1.2em;
+  border-bottom: solid 2px #000;
+}
+
+header:after {
+  content: "auto extand";
+  display: block;
+  visibility: hidden;
+  height: 0;
+  clear: both;
+}
+
+header h1 {
+  margin: 0;
+  margin-bottom: 0.2em;
+}
+
+.header-info > div {
+  float: left;
+}
+
+.body {
+  width: 100%;
+  min-height: 90%;
+}
+
+nav {
+  display: block;
+  min-height: 90%;
+  min-width: 20%;
+  float: left;
+  border-right: solid 2px #000;
+}
+
+.navlist {
+  margin: 0;
+  padding: 0;
+}
+
+.navlist li {
+  -webkit-transition: background-color 1s linear;
+  -moz-transition: background-color 1s linear;
+  transition: background-color 1s linear;
+  background-color: #fff;
+  display: block;
+  border-bottom: 1px solid #0f0f0f;
+}
+
+.navlist a {
+  display: block;
+  width: auto;
+  height: 100%;
+  color: #000;
+  padding: 1em 3em;
+  text-decoration: none;
+}
+
+.navlist li:hover {
+  background-color: #2f2f2f;
+}
+
+.navlist li:hover a {
+  color: #fff;
+}
+
+.sublist-header:hover {
+  background-color: #fff !important;
+}
+
+.sublist a {
+  padding: 0.7em 3em !important;
+}
+
+.sublist a:before {
+  content: "> ";
+}
+
+.content {
+  display: block;
+  float: left;
+  min-width: 50%;
+  max-width: 70%;
+  margin: 2em 2.5% 0 2.5%;
+  overflow: auto;
+}
+
+footer {
+  display: block;
+  width: 100%;
+}
+
+footer small {
+  min-width: 1px;
+  float: right;
+}
+
+@media screen and (max-width: 600px) {
+  nav {
+    width: 100%;
+    border: none;
+  }
+
+  .content {
+    width: 100%;
+  }
+}
