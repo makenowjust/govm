@@ -166,6 +166,10 @@ class GoVM:
       self.link_current(version)
     return True
 
+  def cmd_update(self, args):
+    '''Update remote versions of Go'''
+    return self.fetch()
+
   def cmd_setup(self, args):
     '''Set up files and directories for GoVM'''
     root = self.cfg.root
