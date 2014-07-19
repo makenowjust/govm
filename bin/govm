@@ -40,7 +40,7 @@ class GoVM:
     (options, left_args) = p.parse_args(args[1:])
     if len(left_args) == 0:
       left_args = ['help']
-    subcmd_name = left_args[0]
+    subcmd_name = left_args[0].replace('-', '_')
     try:
       subcmd_func = getattr(self, 'cmd_%s' % subcmd_name)
     except AttributeError:
