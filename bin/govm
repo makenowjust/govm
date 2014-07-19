@@ -30,7 +30,7 @@ class GoVM:
   #     current   Symbolic link for an install directory.
   #     ...
 
-  version_str  = '0.4.2'
+  version_str  = '0.5.0-dev'
 
   # entry point
 
@@ -40,7 +40,7 @@ class GoVM:
     (options, left_args) = p.parse_args(args[1:])
     if len(left_args) == 0:
       left_args = ['help']
-    subcmd_name = left_args[0]
+    subcmd_name = left_args[0].replace('-', '_')
     try:
       subcmd_func = getattr(self, 'cmd_%s' % subcmd_name)
     except AttributeError:
@@ -165,6 +165,10 @@ class GoVM:
         rm(current_dir)
       self.link_current(version)
     return True
+
+  def cmd_update(self, args):
+    '''Update remote versions of Go'''
+    return self.fetch()
 
   def cmd_setup(self, args):
     '''Set up files and directories for GoVM'''

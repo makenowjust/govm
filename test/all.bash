@@ -21,7 +21,7 @@ export GOVM_REPO_URL=$GOVM_ROOT/.repo
 $GOVM_SELF_REPO_URL/test/hg/setup.bash
 
 # run each test
-tests=(install use list_remote list build uninstall)
+tests=(install use list_remote list build uninstall update)
 for test in ${tests[@]}; do
   echo "test $test"
   eval "./test/test-${test}.bash"
