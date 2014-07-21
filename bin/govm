@@ -170,6 +170,10 @@ class GoVM:
     '''Update remote versions of Go'''
     return self.fetch()
 
+  def cmd_rehash(self, args):
+    '''Rehash binaries of Go.'''
+    return self.link_current(self.cfg.current_version())
+
   def cmd_setup(self, args):
     '''Set up files and directories for GoVM'''
     root = self.cfg.root
