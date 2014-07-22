@@ -167,7 +167,7 @@ class GoVM:
     return True
 
   def cmd_update(self, args):
-    '''Update remote versions of Go'''
+    '''Update remote versions of Go.'''
     return self.fetch()
 
   def cmd_rehash(self, args):
