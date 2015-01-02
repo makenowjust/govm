@@ -248,8 +248,8 @@ class GoVM:
       and (isdir(gos_dir) or mkdir(gos_dir))
       and (
         isdir(go_dir)
-        or sh('cd %s && hg archive -t tar -r %s -p %s - | (cd %s && tar xf -)'
-          % (repo_dir, version, version, gos_dir))
+        or sh('hg clone %s -u %s %s/%s'
+          % (repo_dir, version, gos_dir, version))
         or die()
       )
     )
