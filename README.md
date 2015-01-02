@@ -184,4 +184,4 @@ $ ./test/all.bash
 
 ##License
 
-This software is released under the MIT License, see LICENSE.
+This software is released under the MIT License, see LICENSE or <http://makenowjust.github.io/license/mit?2014-2015>.
