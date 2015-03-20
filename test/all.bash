@@ -15,10 +15,10 @@ rm -rf $GOVM_ROOT
 $GOVM_SELF_REPO_URL/bin/govm setup >/dev/null
 test "`which govm`" == "$GOROOT/bin/govm"
 
-# setup hg repository
-echo "setup hg repository"
+# setup git repository
+echo "setup git repository"
 export GOVM_REPO_URL=$GOVM_ROOT/.repo
-$GOVM_SELF_REPO_URL/test/hg/setup.bash
+$GOVM_SELF_REPO_URL/test/git/setup.bash
 
 # run each test
 tests=(install use list_remote list build uninstall update)

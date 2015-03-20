@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-$GOVM_SELF_REPO_URL/test/hg/update.bash
+$GOVM_SELF_REPO_URL/test/git/update.bash
 
 ok=$(govm list_remote | grep gotest3)
 test -z "$ok"
