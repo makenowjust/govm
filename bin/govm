@@ -118,8 +118,7 @@ class GoVM:
     repo_dir = self.cfg.repo_dir()
     if not isdir(repo_dir):
       self.fetch()
-    tags = os.popen('cd %s && hg tags' % repo_dir).read().split('\n')
-    tags = [t for t in tags if t.startswith('go')]
+    tags = os.popen('cd %s && git tag -l go*' % repo_dir).read().split('\n')
     for t in tags:
       print t.split(' ')[0]
     return True
@@ -230,13 +229,13 @@ class GoVM:
     repo_url = self.cfg.repo_url()
     repo_dir = self.cfg.repo_dir()
     return (
-      (has('hg') or die('Mercurial is required.'))
+      (has('git') or die('Git is required.'))
       and (
         isdir(repo_dir)
-        or sh('hg clone %s %s' % (repo_url, repo_dir))
+        or sh('git clone %s %s' % (repo_url, repo_dir))
         or die()
       )
-      and (sh('cd %s && hg pull' % repo_dir) or die())
+      and (sh('cd %s && git pull' % repo_dir) or die())
     )
 
   def checkout(self, version):
@@ -244,12 +243,15 @@ class GoVM:
     gos_dir = self.cfg.gos_dir()
     go_dir = self.cfg.go_dir(version)
     return (
-      (has('hg') or die('Mercurial is required.'))
+      (has('git') or die('Git is required.'))
       and (isdir(gos_dir) or mkdir(gos_dir))
       and (
         isdir(go_dir)
-        or sh('hg clone %s -u %s %s/%s'
-          % (repo_dir, version, gos_dir, version))
+        or (
+            sh('git clone %s %s/%s'
+              % (repo_dir, gos_dir, version))
+            and sh('cd %s/%s && git checkout %s 2>%s'
+              % (gos_dir, version, version, devnull)))
         or die()
       )
     )
@@ -344,7 +346,7 @@ class GoVMConfig:
   def __init__(self, env):
     self.env = env
     self.root = env.get(self.root_var_name, '~/.govm')
-    self.repo = env.get(self.repo_var_name, 'https://code.google.com/p/go')
+    self.repo = env.get(self.repo_var_name, 'https://go.googlesource.com/go')
     self.govm_repo = env.get(self.govm_repo_var_name, 'https://github.com/MakeNowJust/govm.git')
 
   def gos_dir(self):
