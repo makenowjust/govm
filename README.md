@@ -81,22 +81,22 @@ It means the repository of GoVM. default is `https://github.com/MakeNowJust/govm
 Install.
 
 ```
-$ govm install go1.4
+$ govm install go1.4.2
 govm> ...
 ```
 
 Swintch use version.
 
 ```
-$ govm use go1.4
+$ govm use go1.4.2
 $ go version
-go version go1.4 ...
+go version go1.4.2 ...
 ```
 
 Build for cross compiling.
 
 ```
-$ govm build go1.4 windows amd64
+$ govm build go1.4.2 windows amd64
 govm> ...
 ```
 
@@ -104,21 +104,21 @@ View all installed version list.
 
 ```
 $ govm list
-* go1.4
+* go1.4.2
 ```
 
 Remote version view.
 
 ```
 $ govm list_remote
-go1.4
 ...
+go1.4.2
 ```
 
 Uninstall.
 
 ```
-$ govm uninstall go1.4
+$ govm uninstall go1.4.2
 ```
 
 Update GoVM.
@@ -131,7 +131,7 @@ View help.
 
 ```
 $ govm help
-Version: 0.6.0
+Version: 0.7.0
 
 Available commands:
   build        Build a specific version of Go runtime for cross compiling.
@@ -145,10 +145,10 @@ Available commands:
   use          Use a specific version of Go as the default one.
 
 Examples:
-  govm install go1.4             # install go1.4
-  govm use go1.4                 # using go1.4 as default
-  govm build go1.4 windows amd64 # build runtime for windows/amd64 cross compiling
-  govm uninstall go1.4           # uninstall go1.4
+  govm install go1.4.2             # install go1.4.2
+  govm use go1.4.2                 # using go1.4.2 as default
+  govm build go1.4.2 windows amd64 # build runtime for windows/amd64 cross compiling
+  govm uninstall go1.4.2           # uninstall go1.4.2
 ```
 
 ##Directory structure

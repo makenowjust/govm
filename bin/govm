@@ -66,10 +66,10 @@ class GoVM:
       )
     print
     print 'Examples:'
-    print '  govm install go1.4             # install go1.4'
-    print '  govm use go1.4                 # using go1.4 as default'
-    print '  govm build go1.4 windows amd64 # build runtime for windows/amd64 cross compiling'
-    print '  govm uninstall go1.4           # uninstall go1.4'
+    print '  govm install go1.4.2             # install go1.4.2'
+    print '  govm use go1.4.2                 # using go1.4.2 as default'
+    print '  govm build go1.4.2 windows amd64 # build runtime for windows/amd64 cross compiling'
+    print '  govm uninstall go1.4.2           # uninstall go1.4.2'
     return True
 
   def cmd_install(self, args):
