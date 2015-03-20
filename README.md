@@ -16,13 +16,12 @@ Prequirees:
 
   - Python (version 2 only)
   - Git
-  - Mercurial
   - And [Go requires](http://golang.org/doc/install).
 
 If you use ubuntu or debian, 
 
 ```
-$ sudo apt-get install git mercurial build-essential
+$ sudo apt-get install git build-essential
 ```
 
 Using curl one liner.
