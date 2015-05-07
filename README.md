@@ -40,7 +40,7 @@ Add `$PATH` setting your shell config file (`.bashrc` or `.zshrc`).
 
 ```sh
 export GOVM_ROOT=$HOME/.govm
-export PATH=$GOROOT/versions/current/bin:$PATH
+export PATH=$GOVM_ROOT/versions/current/bin:$PATH
 ```
 
 Reload config.
