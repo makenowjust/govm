@@ -1,16 +1,16 @@
-#govm [![Build Status](https://drone.io/github.com/MakeNowJust/govm/status.png)](https://drone.io/github.com/MakeNowJust/govm/latest)
+# govm [![Build Status](https://drone.io/github.com/MakeNowJust/govm/status.png)](https://drone.io/github.com/MakeNowJust/govm/latest)
 
 GoVM is the Version Manager of Go.
 Inspired [nodebrew](https://github.com/hokaccha/nodebrew) and [vvm](https://github.com/kana/vim-version-manager).
 
-##Feature
+## Feature
 
   - Main program is python script of one file.
   - One liner install
   - Cross compile support
   - __Windows support__
 
-##Install
+## Install
 
 Prequirees:
 
@@ -55,11 +55,11 @@ Confirm.
 $ govm help
 ```
 
-##Setting
+## Setting
 
 GoVM read setting from environment variables.
 
-###`$GOVM_ROOT`
+### `$GOVM_ROOT`
 
 It means govm's home directory. default is `$HOME/.govm`.
 
@@ -67,15 +67,15 @@ It means govm's home directory. default is `$HOME/.govm`.
 export GOVM_ROOT=/path/to/.govm
 ```
 
-###`$GOVM_REPO_URL`
+### `$GOVM_REPO_URL`
 
 It means the repository of Go. default is `https://code.google.com/p/go`.
 
-###`$GOVM_SELF_REPO_URL`
+### `$GOVM_SELF_REPO_URL`
 
 It means the repository of GoVM. default is `https://github.com/MakeNowJust/govm.git`.
 
-##Example
+## Example
 
 Install.
 
@@ -84,7 +84,7 @@ $ govm install go1.4.2
 govm> ...
 ```
 
-Swintch use version.
+Switch use version.
 
 ```
 $ govm use go1.4.2
@@ -150,7 +150,7 @@ Examples:
   govm uninstall go1.4.2           # uninstall go1.4.2
 ```
 
-##Directory structure
+## Directory structure
 
 ```
 $GOVM_ROOT
@@ -161,11 +161,11 @@ $GOVM_ROOT
     ...       And other versions of Go
 ```
 
-##More help
+## More help
 
   - If you want to change version of Go by directories, you should use [direnv](https://github.com/zimbatm/direnv).
 
-##Developing
+## Developing
 
 Run test.
 
@@ -173,7 +173,7 @@ Run test.
 $ ./test/all.bash
 ```
 
-##Contributing
+## Contributing
 
   1. Fork it. ( <https://github.com/MakeNowJust/govm/fork> )
   2. Create your feature branch. ( `git checkout -b your-new-feature` )
@@ -181,6 +181,6 @@ $ ./test/all.bash
   4. Push to the branch. ( `git push origin your-new-feature` )
   5. Create new Pull Request.
 
-##License
+## License
 
 This software is released under the MIT License, see LICENSE or <http://makenowjust.github.io/license/mit?2014-2015>.
